@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="670" viewBox="0 0 800 670" role="img" aria-labelledby="title desc">
+<title id="title">DNS and Dragons proposed EC2 architecture</title><desc id="desc">Browser requests travel to Nginx on a Linux EC2 instance, then the Node application over loopback port 3000. Node reads and writes SQLite on the instance's persistent EBS volume. Responses return over the same path. Systemd supervises the app. This is a proposed deployment.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="#79806d"/></marker></defs>
+<rect width="800" height="670" rx="12" fill="#f6f4ee"/>
+<g font-family="system-ui,sans-serif" text-anchor="middle" fill="#35432f">
+<text x="400" y="40" font-size="22" font-family="Georgia,serif">DNS &amp; Dragons</text><text x="400" y="66" font-size="12" fill="#7c806e">Proposed deployment · not yet provisioned</text>
+<rect x="235" y="92" width="330" height="70" rx="7" fill="#fdfcf8" stroke="#d6dacd"/><text x="400" y="123" font-size="16">Browser</text><text x="400" y="145" font-size="11" fill="#818775">Public UI · JSON API · /health</text>
+<rect x="110" y="220" width="580" height="398" rx="12" fill="#edeee4" stroke="#cbd1be" stroke-dasharray="5 5"/><text x="400" y="246" font-size="13">Linux EC2 · security group · persistent EBS volume</text>
+<rect x="235" y="270" width="330" height="64" rx="7" fill="#fdfcf8" stroke="#d6dacd"/><text x="400" y="298" font-size="16">Nginx reverse proxy</text><text x="400" y="320" font-size="11" fill="#818775">Public HTTP / configured HTTPS</text>
+<path d="M400 170v90" stroke="#79806d" marker-start="url(#arrow)" marker-end="url(#arrow)"/><text x="480" y="195" font-size="11" fill="#818775">Request / response</text>
+<rect x="235" y="393" width="330" height="64" rx="7" fill="#fdfcf8" stroke="#d6dacd"/><text x="400" y="421" font-size="16">Node.js 24 application</text><text x="400" y="443" font-size="11" fill="#818775">systemd · validation · structured logs</text>
+<path d="M400 342v41" stroke="#79806d" marker-start="url(#arrow)" marker-end="url(#arrow)"/><text x="493" y="369" font-size="11" fill="#818775">127.0.0.1:3000</text>
+<rect x="235" y="515" width="330" height="64" rx="7" fill="#fdfcf8" stroke="#d6dacd"/><text x="400" y="542" font-size="16">SQLite database</text><text x="400" y="565" font-size="11" fill="#818775">Incidents + investigation events · EBS disk</text>
+<path d="M400 465v40" stroke="#79806d" marker-start="url(#arrow)" marker-end="url(#arrow)"/><text x="497" y="491" font-size="11" fill="#818775">Parameterized SQL</text>
+<text x="400" y="648" font-size="11" fill="#818775">Only web traffic is public. Application port and database stay on the instance.</text>
+</g></svg>

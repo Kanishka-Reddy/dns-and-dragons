@@ -1,0 +1,30 @@
+# Example only: install as /etc/systemd/system/dns-dragons.service.
+# Create user dns-dragons, copy code into /opt/dns-and-dragons,
+# and verify /usr/bin/node points to Node 24 before enabling.
+[Unit]
+Description=DNS and Dragons incident ledger
+After=network.target
+
+[Service]
+Type=simple
+User=dns-dragons
+Group=dns-dragons
+WorkingDirectory=/opt/dns-and-dragons
+ExecStart=/usr/bin/node /opt/dns-and-dragons/server.mjs
+Environment=NODE_ENV=production
+Environment=HOST=127.0.0.1
+Environment=PORT=3000
+Environment=DATABASE_PATH=/var/lib/dns-dragons/realm.sqlite
+StateDirectory=dns-dragons
+StateDirectoryMode=0700
+UMask=0077
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/dns-dragons
+
+[Install]
+WantedBy=multi-user.target

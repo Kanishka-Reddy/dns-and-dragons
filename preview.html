@@ -1,0 +1,285 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>DNS & Dragons — design preview</title><style>body{margin:0}</style></head><body><div id="dns-dragons-preview"><style>@scope (#dns-dragons-preview) {
+#dns-dragons-preview{--paper:#f6f4ee;--surface:#fdfcf8;--ink:#2f332d;--muted:#777a70;--line:#dfdfd5;--red:#793e35;--red-hover:#633127;--green:#53694e;--mono:'Courier New',monospace;--serif:Georgia,'Times New Roman',serif;--sans:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+*{box-sizing:border-box}.preview-body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:14px}button,input,select,textarea{font:inherit}button,a,input,select,textarea{-webkit-tap-highlight-color:transparent}button{cursor:pointer}button:disabled{cursor:wait;opacity:.65}a{color:inherit}button{color:inherit}button:focus-visible,a:focus-visible{outline:3px solid #ac8255;outline-offset:4px}input:focus,select:focus,textarea:focus{outline:2px solid #ac8255;outline-offset:1px}button{transition:background .15s,box-shadow .15s}button:active{transform:translateY(1px)}[hidden]{display:none!important}.sr-only{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}.skip-link{position:fixed;top:-80px;left:20px;z-index:10;background:var(--ink);color:white;padding:15px}.skip-link:focus{top:15px}
+.sidebar{width:252px;position:fixed;inset:0 auto 0 0;background:#eeeee5;border-right:1px solid var(--line);display:flex;flex-direction:column;padding:31px 21px 0;z-index:2}.brand{text-decoration:none;display:flex;align-items:center;gap:10px;font-family:var(--serif);font-weight:700;font-size:19px;letter-spacing:-.5px;white-space:nowrap}.brand-icon{border:1px solid var(--red);color:var(--red);width:37px;height:42px;display:flex;align-items:center;justify-content:center;position:relative;font-size:13px;border-radius:10px 10px 16px 16px;flex-shrink:0}.brand-icon span{font-size:10px;margin:0 1px}.brand small{display:block;font-family:var(--mono);font-size:7px;letter-spacing:1.1px;font-weight:400;color:var(--muted);margin-top:7px}.sidebar-label{font:10px var(--mono);letter-spacing:1.8px;color:#8a8b7f;margin:54px 12px 16px}.nav-item{width:100%;border:0;background:transparent;display:flex;align-items:center;gap:11px;text-align:left;padding:13px 12px;border-radius:5px;margin-bottom:7px;font-size:13px;color:#666b60}.nav-item:hover{background:#e5e6db}.nav-item.selected{color:#394836;background:#dde2d3;font-weight:600}.nav-symbol{font-size:19px;width:21px;line-height:20px;text-align:center}.nav-count{margin-left:auto;font:10px var(--mono);background:#cad3bf;border-radius:4px;padding:3px 6px}.nav-item .health-dot{margin-left:auto}.health-dot{display:inline-block;width:6px;height:6px;background:#7c816e;border-radius:50%;flex-shrink:0}.health-dot.good{background:#627f52;box-shadow:0 0 0 3px #627f5212}.health-dot.bad{background:#b14c3d}.sidebar-callout{margin:43px 10px 20px;border-top:1px solid #dadccf;padding-top:25px}.callout-star{font-size:28px;color:#92967e}.sidebar-callout p{font:italic 17px/1.6 var(--serif);color:#737b67;margin:7px 0 12px}.tiny-label{font:8px var(--mono);letter-spacing:1.5px;color:#909382}.field-guide{margin-top:auto;display:flex;align-items:center;gap:8px;border:0;background:transparent;padding:16px 3px;font-size:11px;color:#767a6d}.field-guide span:last-child{margin-left:auto}.field-guide:hover{color:var(--red)}.sidebar-footer{margin-top:3px;border-top:1px solid var(--line);display:flex;align-items:center;padding:23px 0;gap:10px;font-size:11px}.avatar{border-radius:50%;background:#daddcf;width:32px;height:32px;display:grid;place-items:center;color:#657059;font:11px var(--mono)}.sidebar-footer small{display:block;color:#8a8d80;font-size:9px;margin-top:5px}
+.workspace{margin-left:252px}.topbar{height:73px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 47px;font-size:11px;background:#faf9f4}.breadcrumb{color:#95988b}.slash{color:#c0c1b6;margin:0 15px}.health-pill{border:1px solid #dddfd2;padding:7px 10px;background:#f2f4ec;display:flex;align-items:center;gap:8px;border-radius:4px;color:#67735e;font:9px var(--mono)}main{max-width:1330px;margin:auto;padding:0 47px}.hero{display:flex;align-items:center;justify-content:space-between;padding:46px 0 35px;min-height:229px}.eyebrow{font:9px var(--mono);letter-spacing:2.1px;color:#7a806b;display:flex;gap:9px;align-items:center}.eyebrow>span{width:15px;height:1px;background:#929a7f}h1{font:normal clamp(33px,3.1vw,48px)/1.1 var(--serif);letter-spacing:-1.6px;margin:16px 0 13px}.hero p{color:var(--muted);font-size:12px;line-height:1.6}.hero-seal{position:relative;width:152px;text-align:center;transform:rotate(9deg);color:#a39c80;margin-right:16px}.hero-seal img{width:88px;height:95px;filter:opacity(.68)}.seal-caption{display:block;font:7px var(--mono);letter-spacing:1.5px;margin-top:8px;white-space:nowrap}.seal-spark{position:absolute}.seal-spark.one{left:1px;top:12px;font-size:28px}.seal-spark.two{right:2px;bottom:29px;font-size:16px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:17px;margin:0 0 40px}.stat{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:22px 22px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 0 #d9d8cb1a}.stat-label{font:9px var(--mono);letter-spacing:1.2px;color:#7c8171}.stat strong{display:block;font:normal 35px/1.2 var(--serif);margin-top:11px}.stat-caption{font-size:10px;color:#96988a;display:block;margin-top:4px}.stat-icon{width:38px;height:38px;border:1px solid;border-radius:50%;display:grid;place-items:center;font-family:var(--serif);font-size:22px}.active-icon{color:#877a4d;border-color:#e5dfc7;background:#f5f2e4}.critical-icon{color:#a16556;border-color:#eddbd3;background:#f9eeea}.resolved-icon{color:#728366;border-color:#dbe1d0;background:#f0f3e9}
+.section-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px;gap:15px}h2{font:normal 26px/1.2 var(--serif);letter-spacing:-.6px;margin:0}.section-heading p{color:#8a8c7f;font-size:11px;margin:9px 0 0}.primary,.secondary{border:1px solid transparent;padding:11px 16px;display:inline-flex;gap:9px;align-items:center;justify-content:center;border-radius:4px;font-weight:500;font-size:11px;white-space:nowrap}.primary{background:var(--red);color:#fff8ee;box-shadow:0 2px 2px #47201914}.primary:hover{background:var(--red-hover)}.primary>span{font-size:17px;line-height:15px}.secondary{background:#f4f3ec;border-color:var(--line);color:#6e7464}.secondary:hover{background:#eaece2}.filters{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);gap:15px;align-items:center;padding:0 0 13px}.tabs{display:flex;gap:4px}.tab{border:0;background:none;color:#8b8e80;font-size:10px;padding:8px 9px;display:flex;align-items:center;gap:7px;border-radius:4px}.tab.current{background:#e5e8dc;color:#4b5c40;font-weight:600}.tab:hover{background:#eceee5}.tab span{background:#eaece3;color:#7e8772;font:9px var(--mono);border-radius:3px;min-width:17px;padding:2px 4px}.tab.current span{background:#d5ddc9;color:#536549}.filter-inputs{display:flex;gap:9px;align-items:center}.search{display:flex;align-items:center;border:1px solid var(--line);background:var(--surface);border-radius:4px;padding-left:10px;gap:6px;color:#9c9e8d}.search>span{font-size:21px;line-height:20px;transform:rotate(-20deg)}.search input{border:0;background:none;padding:8px 4px;width:140px;font-size:10px;color:var(--ink)}.search input::placeholder{color:#a1a393}.filter-inputs select{font-size:10px;padding:8px 22px 8px 10px;border:1px solid var(--line);border-radius:4px;background:var(--surface);color:#727769;max-width:155px}.list-labels{display:grid;grid-template-columns:minmax(0,1fr) 120px 122px 14px;gap:18px;padding:17px 18px 12px;font:8px var(--mono);letter-spacing:1.3px;color:#9b9f90}.incident-list{min-height:150px}.incident-card{width:100%;text-align:left;display:grid;grid-template-columns:minmax(0,1fr) 120px 122px 14px;align-items:center;gap:18px;background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:18px;margin-bottom:9px;color:inherit;box-shadow:0 1px 1px #d9d8cb14}.incident-card:hover{border-color:#b8bea9;background:#fffef9;box-shadow:0 3px 9px #343d2110}.encounter{display:flex;gap:14px;align-items:center;min-width:0}.severity-tile{width:34px;height:39px;clip-path:polygon(50% 0,100% 24%,100% 76%,50% 100%,0 76%,0 24%);flex-shrink:0;display:grid;place-items:center;font:14px var(--serif)}.sev-1{background:#f3ddd5;color:#a15747}.sev-2{background:#f0e8cc;color:#9e8746}.sev-3{background:#e3e8dc;color:#75866c}.encounter-copy{min-width:0}.incident-meta{font:8px var(--mono);letter-spacing:.8px;color:#9a9d8e;display:flex;align-items:center;gap:8px;margin-bottom:7px}.incident-meta .meta-severity{letter-spacing:.2px}.sev-text-1{color:#a15747}.sev-text-2{color:#9e8746}.sev-text-3{color:#75866c}.incident-title{font-size:12px;font-weight:600;line-height:1.45;margin:0;overflow-wrap:anywhere}.service-line{display:flex;align-items:center;gap:5px;color:#919586;font-size:9px;margin-top:8px}.status-badge{font-size:9px;border:1px solid;border-radius:4px;padding:5px 7px;display:inline-flex;gap:6px;align-items:center;white-space:nowrap;width:max-content}.status-badge::before{content:'';width:4px;height:4px;flex-shrink:0;background:currentColor;border-radius:50%}.status-investigating{background:#f7f0e1;border-color:#e8ddc0;color:#9a7c39}.status-monitoring{background:#edf0f3;border-color:#d9e0e6;color:#6f8494}.status-resolved{background:#edf2e7;border-color:#d9e1cf;color:#6b805b}.assignee{font-size:10px;color:#868d7c;overflow-wrap:anywhere}.assignee .time{display:block;font:8px var(--mono);color:#a0a596;margin-top:7px}.card-arrow{font-size:17px;color:#b3b7a7}.ledger-footer{display:flex;justify-content:space-between;color:#969c8b;font:8px var(--mono);padding:12px 1px 18px;gap:10px}.small-diamond{margin-right:5px}.page-footer{border-top:1px solid var(--line);margin-top:29px;padding:23px 0 27px;display:flex;justify-content:space-between;gap:10px;font:8px var(--mono);letter-spacing:1px;color:#a0a493}.page-footer>span:last-child{letter-spacing:0}.footer-divider{margin:0 8px;color:#c5c8b9}.loading,.empty-state{padding:45px 20px;text-align:center;color:#959b87}.empty-state h3{font:25px var(--serif);color:#68745b;margin:5px}.empty-state p{font-size:12px;line-height:1.8}.empty-state button{margin-top:8px}.empty-icon{display:block;font-size:30px;margin-bottom:15px;color:#8d9877}.error-banner{background:#f4e5df;border:1px solid #debdb1;padding:16px;margin:12px 0;display:flex;justify-content:space-between;gap:12px;color:#904e3d;font-size:12px}.error-banner button{border:0;background:none;text-decoration:underline;color:inherit}
+.modal{border:1px solid #d5d7c7;border-radius:9px;max-width:580px;width:calc(100% - 30px);padding:28px 32px;background:#faf9f3;color:var(--ink);box-shadow:0 20px 100px #252d2950;max-height:90dvh;overflow:auto}.modal::backdrop{background:#242b245e;backdrop-filter:blur(3px)}.modal-top{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:13px}.icon-button{background:transparent;border:0;font-size:26px;line-height:25px;color:#9a9d8d;padding:0 4px}.icon-button:hover{color:var(--red)}.modal h2{font-size:33px;margin:5px 0 12px;overflow-wrap:anywhere}.modal-intro{font-size:12px;color:#8a8f7c;line-height:1.7;margin:0 0 24px}.modal label{display:block;font-size:11px;font-weight:600;margin:17px 0 8px}.modal input,.modal select,.modal textarea{width:100%;padding:11px;border:1px solid #d9ddcd;border-radius:4px;background:#fffef9;color:var(--ink);font-size:12px;line-height:1.5}.modal textarea{resize:vertical}.modal input::placeholder,.modal textarea::placeholder{color:#aaaD9e}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.form-hint{font-size:10px;line-height:1.7;color:#939a85;margin:14px 0}.form-error{font-size:12px;color:#a15747;background:#f5e9e3;padding:10px;line-height:1.6}.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:24px;padding-top:20px;border-top:1px solid var(--line)}.detail-modal{max-width:670px}.detail-meta{display:flex;flex-wrap:wrap;gap:12px;align-items:center;font:10px var(--mono);color:#969c8b}.detail-description{font-size:13px;line-height:1.9;color:#727b66;margin:21px 0;white-space:pre-wrap;overflow-wrap:anywhere}.detail-info{display:grid;grid-template-columns:1fr 1fr;gap:15px;background:#f0f1e7;padding:16px;border:1px solid #e2e5d6;border-radius:4px}.detail-info span{font:8px var(--mono);letter-spacing:1px;color:#959b85;display:block;margin-bottom:7px}.detail-info p{font-size:11px;margin:0;overflow-wrap:anywhere}.timeline-title{font:19px var(--serif);margin:28px 0 18px}.timeline{padding-left:8px}.timeline-event{border-left:1px solid #d9ddcc;padding:0 0 22px 21px;position:relative}.timeline-event::before{content:'';position:absolute;width:7px;height:7px;border:3px solid #faf9f3;border-radius:50%;background:#a0ab8f;left:-7px;top:2px}.event-meta{font:8px var(--mono);color:#a0a691;line-height:1.7}.event-body{font-size:12px;line-height:1.8;margin:8px 0 0;color:#757e69;white-space:pre-wrap;overflow-wrap:anywhere}.update-form{border-top:1px solid var(--line);margin-top:0;padding-top:6px}.update-form .modal-actions{border-top:0;padding-top:0}.guide-section{border-top:1px solid var(--line);padding-top:17px;margin-top:18px}.guide-section h3{font:19px var(--serif);margin:0 0 10px}.guide-section p{font-size:12px;color:#7e8672;line-height:1.9}.guide-severities{background:#f0f1e8;padding:5px 14px;margin-top:12px}.guide-severities p{font-size:11px}.health-row{display:flex;justify-content:space-between;gap:15px;padding:16px 0;border-bottom:1px solid var(--line);font-size:12px}.health-row b{font-weight:500;color:var(--green)}.health-note{font-size:10px;line-height:1.8;color:#949b85}.button-link{text-decoration:none}#toast{position:fixed;bottom:25px;left:calc(50% + 126px);transform:translateX(-50%);background:#354431;color:#f6f5e9;border:1px solid #526748;padding:14px 20px;border-radius:5px;box-shadow:0 5px 25px #29302530;font-size:12px;max-width:calc(100% - 30px);z-index:20}
+@media(min-width:1500px){main{padding:0 65px}.topbar{padding:0 65px}.incident-title{font-size:13px}.hero{padding-top:55px;padding-bottom:43px}}
+@media(max-width:1190px){.sidebar{width:224px;padding-left:15px;padding-right:15px}.brand{font-size:17px}.brand small{font-size:6px}.workspace{margin-left:224px}main{padding:0 30px}.topbar{padding:0 30px}.list-labels,.incident-card{grid-template-columns:minmax(0,1fr) 100px 14px;gap:12px}.list-labels>span:nth-child(3),.assignee{display:none}.filters{align-items:flex-start;flex-direction:column;gap:12px}.filter-inputs{width:100%}.search{flex:1}.search input{width:100%}.stat{padding:18px}.stat-icon{width:30px;height:30px;font-size:18px}.stat-label{font-size:8px}.stat-caption{font-size:9px}#toast{left:calc(50% + 112px)}}
+@media(max-width:800px){.sidebar{position:relative;width:100%;padding:15px 20px;border-right:0;border-bottom:1px solid var(--line);display:block}.brand{font-size:19px}.brand small{font-size:7px}.brand-icon{width:32px;height:37px}.sidebar-label,.sidebar-callout,.sidebar-footer,.field-guide{display:none}.sidebar nav{display:flex;margin-top:16px;gap:7px}.nav-item{font-size:11px;padding:9px;margin:0;justify-content:center;gap:6px;white-space:nowrap}.nav-item .health-dot,.nav-count{display:none}.nav-symbol{font-size:16px;width:16px}.workspace{margin:0}.topbar{height:52px;padding:0 24px;font-size:10px}.health-pill{font-size:8px;padding:6px}main{padding:0 24px}.hero{min-height:auto;padding:32px 0 28px}.hero h1{font-size:36px}.hero-seal{width:106px;margin-right:0}.hero-seal img{width:66px;height:72px}.seal-caption{font-size:5px}.seal-spark.one{left:0;top:0;font-size:23px}.seal-spark.two{right:0;bottom:20px;font-size:12px}.stats{gap:10px;margin-bottom:30px}.stat{padding:16px 13px}.stat-icon{display:none}.stat strong{font-size:30px}.stat-label{font-size:7px;letter-spacing:.6px}.stat-caption{font-size:8px}.page-footer{margin-top:17px;line-height:1.6;font-size:7px}#toast{left:50%}.ledger-footer{font-size:7px}.incident-title{font-size:12px}.eyebrow{font-size:8px}}
+@media(max-width:480px){main{padding:0 16px}.topbar{padding:0 16px}.breadcrumb,.slash{display:none}.hero h1{font-size:31px;letter-spacing:-1px}.hero p{font-size:10px}.hero-seal{width:65px}.hero-seal img{width:48px;height:56px}.seal-caption{display:none}.seal-spark.one{font-size:15px;left:-5px}.seal-spark.two{font-size:10px;bottom:0}.eyebrow{font-size:7px;letter-spacing:1.3px}.stats{gap:7px}.stat{padding:14px 10px}.stat-label{font-size:6px}.stat-caption{font-size:7px}.stat strong{font-size:27px;margin-top:8px}.section-heading{align-items:flex-start;margin-bottom:18px}.section-heading h2{font-size:23px}.section-heading p{font-size:9px;max-width:170px;line-height:1.7}.primary,.secondary{font-size:10px;padding:10px 12px}.section-heading .primary{font-size:9px;padding:10px}.filters{gap:12px}.filter-inputs select{max-width:126px;font-size:9px}.list-labels{grid-template-columns:1fr 90px;padding:16px 12px 10px}.list-labels>span:last-child{display:none}.incident-card{grid-template-columns:minmax(0,1fr) 85px;padding:14px 10px;gap:7px}.encounter{gap:10px}.severity-tile{width:26px;height:31px;font-size:12px}.incident-meta{font-size:7px;gap:5px}.incident-title{font-size:10px}.service-line{font-size:8px}.status-badge{font-size:7px;padding:5px;gap:4px}.card-arrow{display:none}.ledger-footer>span:last-child{display:none}.page-footer{flex-direction:column;gap:10px}.modal{padding:21px 20px}.modal h2{font-size:27px}.form-grid{grid-template-columns:1fr;gap:0}.sidebar{padding:14px 16px}.nav-item{font-size:9px;padding:8px 5px}.nav-item .nav-symbol{font-size:15px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+#dns-dragons-preview{position:relative;isolation:isolate;min-width:0;color-scheme:light}
+#dns-dragons-preview .preview-body{position:relative;overflow:hidden;min-height:830px}
+#dns-dragons-preview .sidebar{position:absolute}
+#dns-dragons-preview #toast{position:absolute}
+#dns-dragons-preview .skip-link{position:absolute}
+@media(max-width:800px){#dns-dragons-preview .sidebar{position:relative}}
+
+}</style><div class="preview-body">
+  <a href="#main" class="skip-link">Skip to the incident ledger</a>
+  <aside class="sidebar">
+    <a href="#main" class="brand" aria-label="DNS and Dragons home"><span class="brand-icon">D<span>&</span>D</span><span>DNS & Dragons<small>REALM RELIABILITY ENGINEERING</small></span></a>
+    <div class="sidebar-label">YOUR CAMPAIGN</div>
+    <nav aria-label="Main navigation">
+      <button class="nav-item selected" id="nav-ledger"><span class="nav-symbol">▤</span> Incident ledger <span class="nav-count" id="nav-count">—</span></button>
+      <button class="nav-item" id="nav-victories"><span class="nav-symbol">⚑</span> Hall of victories</button>
+      <button class="nav-item" id="nav-health"><span class="nav-symbol">♡</span> Realm health <span class="health-dot" id="nav-health-dot"></span></button>
+    </nav>
+    <div class="sidebar-callout"><span class="callout-star">✧</span><p>May your uptime be high<br>and your dragons few.</p><span class="tiny-label">THE ON-CALL OATH</span></div>
+    <button class="field-guide" id="guide-button"><span>⌘</span> Adventurer’s field guide <span>↗</span></button>
+    <div class="sidebar-footer"><span class="avatar">KR</span><div>Keeper of the realm<small>Level 1 · On-call adventurer</small></div></div>
+  </aside>
+
+  <div class="workspace">
+    <header class="topbar"><div><span class="breadcrumb">The realm</span><span class="slash">/</span><span id="page-breadcrumb">Incident ledger</span></div><button id="top-health" class="health-pill"><span class="health-dot"></span><span id="health-label">Checking the watch…</span></button></header>
+    <main id="main">
+      <section class="hero" aria-labelledby="page-title">
+        <div><div class="eyebrow"><span></span> THE ON-CALL CAMPAIGN</div><h1 id="page-title">Keep the realm running.</h1><p id="page-subtitle">Here be dragons. And occasionally, DNS issues.</p></div>
+        <div class="hero-seal" aria-hidden="true"><span class="seal-spark one">✧</span><span class="seal-spark two">✦</span><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTEwIiBmaWxsPSJub25lIj48cGF0aCBkPSJNNTAgNCA5MyAyOHY1MWwtNDMgMjdMNyA3OVYyOFoiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJtNTAgNCAyMiAzNSAyMS0xMU03IDI4bDIxIDExTDUwIDRNNyA3OWwyMS00MGg0NGwyMSA0ME01MCAxMDYgMjggMzltMjIgNjcgMjItNjdNNyA3OWg4NiIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Im0zOCA2MCA4LTV2MjNtLTkgMGgxOW0wLTE2YzAtMTAgMTUtMTAgMTUgMHY5YzAgMTAtMTUgMTAtMTUgMFoiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPgo=" alt=""><span class="seal-caption">ROLL FOR RELIABILITY</span></div>
+      </section>
+
+      <section class="stats" aria-label="Incident statistics">
+        <div class="stat"><div><span class="stat-label">ACTIVE QUESTS</span><strong id="stat-active">—</strong><span class="stat-caption">Trouble is afoot</span></div><span class="stat-icon active-icon">⚑</span></div>
+        <div class="stat"><div><span class="stat-label">CRITICAL ENCOUNTERS</span><strong id="stat-critical">—</strong><span class="stat-caption">All hands on deck</span></div><span class="stat-icon critical-icon">!</span></div>
+        <div class="stat"><div><span class="stat-label">DRAGONS SLAIN</span><strong id="stat-resolved">—</strong><span class="stat-caption">Peace restored, for now</span></div><span class="stat-icon resolved-icon">✓</span></div>
+      </section>
+
+      <section class="ledger" aria-labelledby="ledger-title">
+        <div class="section-heading"><div><h2 id="ledger-title">The incident ledger</h2><p>Every outage is a story. Give yours a good ending.</p></div><button class="primary" id="new-incident"><span aria-hidden="true">＋</span> Sound the alarm</button></div>
+        <div class="filters">
+          <div class="tabs" role="group" aria-label="Filter by status"><button class="tab current" data-tab="active" aria-pressed="true">Active <span id="tab-active-count">0</span></button><button class="tab" data-tab="all" aria-pressed="false">All incidents <span id="tab-all-count">0</span></button><button class="tab" data-tab="resolved" aria-pressed="false">Resolved <span id="tab-resolved-count">0</span></button></div>
+          <div class="filter-inputs"><label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Search the scrolls…" aria-label="Search incidents" maxlength="120"></label><label class="sr-only" for="severity-filter">Severity</label><select id="severity-filter"><option value="all">All severities</option><option value="SEV-1">SEV-1 · Critical</option><option value="SEV-2">SEV-2 · Major</option><option value="SEV-3">SEV-3 · Minor</option></select></div>
+        </div>
+        <div id="load-error" class="error-banner" hidden><span>The ledger could not be loaded.</span><button id="retry">Try again</button></div>
+        <div class="list-labels" aria-hidden="true"><span>ENCOUNTER</span><span>STATUS</span><span>ADVENTURER</span><span></span></div>
+        <div id="incident-list" class="incident-list" aria-live="polite" aria-busy="true"><p class="loading">Unrolling the scrolls…</p></div>
+        <div class="ledger-footer"><span id="results-count">Fetching the latest tales…</span><span><span class="small-diamond">◇</span> A little chaos. A lot of observability.</span></div>
+      </section>
+      <footer class="page-footer"><span>DNS & DRAGONS <span class="footer-divider">/</span> SLAY BUGS. SAVE THE REALM.</span><span>Design preview · changes reset on refresh.</span></footer>
+    </main>
+  </div>
+
+  <dialog id="create-dialog" aria-labelledby="create-title" class="modal">
+    <div class="modal-top"><span class="eyebrow">A NEW ENCOUNTER</span><button class="icon-button" data-close aria-label="Close new incident">×</button></div>
+    <h2 id="create-title">Sound the alarm.</h2><p class="modal-intro">Something is amiss in the realm. Let’s get it on the record.</p>
+    <form id="create-form">
+      <label for="incident-title">What’s the trouble?</label><input id="incident-title" name="title" required minlength="3" maxlength="120" placeholder="e.g. The firewall is literally on fire">
+      <div class="form-grid"><div><label for="incident-severity">Severity</label><select id="incident-severity" name="severity"><option value="SEV-2">SEV-2 · Major mischief</option><option value="SEV-1">SEV-1 · The realm is on fire</option><option value="SEV-3">SEV-3 · A minor curse</option></select></div><div><label for="incident-service">Affected service</label><input id="incident-service" name="service" required minlength="2" maxlength="60" placeholder="e.g. The enchanted gateway"></div></div>
+      <label for="incident-assignee">Adventurer on duty</label><input id="incident-assignee" name="assignee" required minlength="2" maxlength="60" placeholder="e.g. Kanishka, keeper of uptime">
+      <label for="incident-description">What have you observed?</label><textarea id="incident-description" name="description" required minlength="10" maxlength="3000" rows="4" placeholder="Symptoms, affected villagers, suspicious spells…"></textarea>
+      <p class="form-hint">This is a shared demo ledger. Keep secrets and personal data out of your scrolls.</p><p class="form-error" id="create-error" role="alert" hidden></p>
+      <div class="modal-actions"><button type="button" class="secondary" data-close>Never mind</button><button class="primary" type="submit">Create incident <span aria-hidden="true">↗</span></button></div>
+    </form>
+  </dialog>
+
+  <dialog id="detail-dialog" aria-labelledby="detail-title" class="modal detail-modal"><div id="detail-content"></div></dialog>
+  <dialog id="health-dialog" aria-labelledby="health-title" class="modal"><div class="modal-top"><span class="eyebrow">THE WATCHTOWER</span><button class="icon-button" data-close aria-label="Close realm health">×</button></div><h2 id="health-title">Realm health</h2><p class="modal-intro">A live check of the app and its database. Fictional dragons don’t affect these results.</p><div id="health-content"></div><div class="modal-actions"><button class="secondary" data-close>Close</button><button id="refresh-health" class="primary">Check again</button></div></dialog>
+  <dialog id="guide-dialog" aria-labelledby="guide-title" class="modal"><div class="modal-top"><span class="eyebrow">READ BEFORE QUESTING</span><button class="icon-button" data-close aria-label="Close field guide">×</button></div><h2 id="guide-title">Adventurer’s field guide</h2><p class="modal-intro">An incident tracker with a very questionable naming convention.</p><div class="guide-section"><h3>1. Sound the alarm</h3><p>Record what broke, the affected service, and who’s investigating. Choose the severity based on impact.</p><div class="guide-severities"><p><b class="sev-text-1">SEV-1 · Critical</b> — The realm is down. Drop everything.</p><p><b class="sev-text-2">SEV-2 · Major</b> — Something is degraded. Gather the party.</p><p><b class="sev-text-3">SEV-3 · Minor</b> — A smaller issue. Still worth a quest.</p></div></div><div class="guide-section"><h3>2. Leave a trail</h3><p>Open an incident to add notes. Use <b>Investigating</b> while finding the cause and <b>Monitoring</b> while verifying a fix.</p></div><div class="guide-section"><h3>3. Restore the peace</h3><p>Choose <b>Resolved</b> and document the fix. Your victory joins the hall. If trouble returns, reopen it with an investigation note.</p></div><p class="form-hint">Example incidents are fictional. Changes are stored in a real SQLite database on the server. No spells, AI calls, or actual cloud remediation happen here.</p><div class="modal-actions"><button class="primary" data-close>Let’s go questing</button></div></dialog>
+  <div id="toast" role="status" hidden></div>
+</div></div>
+<script>
+(()=>{
+const previewRoot = document.getElementById('dns-dragons-preview');
+const $ = (selector) => previewRoot.querySelector(selector);
+const $$ = (selector) => [...previewRoot.querySelectorAll(selector)];
+const state = { incidents: [], tab: 'active', query: '', severity: 'all', health: null, selected: null };
+const labels = { investigating: 'Investigating', monitoring: 'Monitoring', resolved: 'Resolved' };
+const severityLabels = { 'SEV-1': 'Critical', 'SEV-2': 'Major', 'SEV-3': 'Minor' };
+// Never interpret user-supplied incident text as markup.
+const escape = (text) => String(text ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+const incidentId = (id) => `DNS-${String(id).padStart(3, '0')}`;
+const date = (value) => new Date(value).toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+function age(value) {
+  const minutes = Math.max(0, Math.floor((Date.now() - Date.parse(value)) / 60000));
+  if (minutes < 1) return 'just now';
+  if (minutes < 60) return `${minutes}m ago`;
+  if (minutes < 1440) return `${Math.floor(minutes / 60)}h ago`;
+  return `${Math.floor(minutes / 1440)}d ago`;
+}
+const badge = (status) => `<span class="status-badge status-${escape(status)}">${escape(labels[status])}</span>`;
+
+const previewRecords = [{"id":6,"title":"Necromancer resurrected deprecated services","description":"Retired services are answering requests again. A suspicious cron spell is running every midnight. Please do not feed the zombie containers.","severity":"SEV-2","service":"Container crypt","assignee":"Arwen, on-call","status":"investigating","created_at":"2026-11-15T23:42:23.073Z","updated_at":"2026-11-16T00:07:23.073Z","resolved_at":null,"events":[{"id":11,"incident_id":6,"body":"The alarm was sounded. An adventurer has been dispatched.","status":"investigating","created_at":"2026-11-15T23:42:23.073Z"},{"id":12,"incident_id":6,"body":"Found an old scheduled job that still references the retired deployment. Tracing its owner before removing it.","status":"investigating","created_at":"2026-11-16T00:07:23.073Z"}]},{"id":5,"title":"Dragon consumed availability zone","description":"A dragon mistook the primary data center for a particularly warm cave. Requests to the eastern realm are timing out. The dragon is not accepting calendar invites.","severity":"SEV-1","service":"Eastern realm","assignee":"Arwen, on-call","status":"investigating","created_at":"2026-11-15T21:42:23.073Z","updated_at":"2026-11-15T22:07:23.073Z","resolved_at":null,"events":[{"id":9,"incident_id":5,"body":"The alarm was sounded. An adventurer has been dispatched.","status":"investigating","created_at":"2026-11-15T21:42:23.073Z"},{"id":10,"incident_id":5,"body":"Confirmed the eastern realm is unreachable. Checking the recovery runbook and the most recent backup.","status":"investigating","created_at":"2026-11-15T22:07:23.073Z"}]},{"id":4,"title":"Certificate expired during the prophecy","description":"The prophecy lasts a thousand years. The certificate lasted ninety days. Browsers are warning villagers that the oracle cannot be trusted.","severity":"SEV-2","service":"Oracle API","assignee":"Merlin, platform","status":"investigating","created_at":"2026-11-15T19:42:23.073Z","updated_at":"2026-11-15T20:07:23.073Z","resolved_at":null,"events":[{"id":7,"incident_id":4,"body":"The alarm was sounded. An adventurer has been dispatched.","status":"investigating","created_at":"2026-11-15T19:42:23.073Z"},{"id":8,"incident_id":4,"body":"Confirmed the certificate expired. Investigating why the renewal timer stopped running.","status":"investigating","created_at":"2026-11-15T20:07:23.073Z"}]},{"id":3,"title":"The load balancer has chosen a favorite","description":"All requests are being routed to one very tired dwarf. Healthy targets are available, but the sticky-session enchantment appears to be permanent.","severity":"SEV-2","service":"Gateway of traffic","assignee":"Gimli, SRE","status":"monitoring","created_at":"2026-11-15T17:42:23.073Z","updated_at":"2026-11-15T18:07:23.073Z","resolved_at":null,"events":[{"id":5,"incident_id":3,"body":"The alarm was sounded. An adventurer has been dispatched.","status":"investigating","created_at":"2026-11-15T17:42:23.073Z"},{"id":6,"incident_id":3,"body":"Removed the sticky-session enchantment. Traffic is balanced again; watching error rates before closing the quest.","status":"monitoring","created_at":"2026-11-15T18:07:23.073Z"}]},{"id":2,"title":"Potion cache serving stale mana","description":"Heroes report that mana potions are restoring yesterday’s energy. The cache is ignoring its TTL. Wizards have requested a very strong coffee.","severity":"SEV-2","service":"Potion cache","assignee":"Merlin, platform","status":"resolved","created_at":"2026-11-15T15:42:23.073Z","updated_at":"2026-11-15T16:07:23.073Z","resolved_at":"2026-11-15T16:07:23.073Z","events":[{"id":3,"incident_id":2,"body":"The alarm was sounded. An adventurer has been dispatched.","status":"investigating","created_at":"2026-11-15T15:42:23.073Z"},{"id":4,"incident_id":2,"body":"The cache TTL was expressed in minutes instead of seconds. Corrected the configuration and verified fresh reads.","status":"resolved","created_at":"2026-11-15T16:07:23.073Z"}]},{"id":1,"title":"Goblin granted AdministratorAccess","description":"An intern goblin acquired the master key to the kingdom. Revoke the role, review the audit trail, and teach least privilege before lunch.","severity":"SEV-3","service":"Identity guild","assignee":"Gimli, SRE","status":"resolved","created_at":"2026-11-15T13:42:23.072Z","updated_at":"2026-11-15T14:07:23.072Z","resolved_at":"2026-11-15T14:07:23.072Z","events":[{"id":1,"incident_id":1,"body":"The alarm was sounded. An adventurer has been dispatched.","status":"investigating","created_at":"2026-11-15T13:42:23.072Z"},{"id":2,"incident_id":1,"body":"Revoked the broad role, checked the audit log, and replaced it with a narrowly scoped policy. No suspicious activity found.","status":"resolved","created_at":"2026-11-15T14:07:23.072Z"}]}];
+async function api(path, options = {}) {
+  const method = options.method || 'GET';
+  const found = previewRecords.find(i => i.id === Number(path.split('/').pop()));
+  if (method === 'POST') {
+    const body = JSON.parse(options.body); const now = new Date().toISOString();
+    const record = { ...body, id: Math.max(0, ...previewRecords.map(i => i.id)) + 1, status: 'investigating', created_at: now, updated_at: now, resolved_at: null, events: [{body:'The alarm was sounded. An adventurer has been dispatched.',status:'investigating',created_at:now}] };
+    previewRecords.unshift(record); return structuredClone(record);
+  }
+  if (method === 'PATCH' && found) {
+    const body = JSON.parse(options.body); const now = new Date().toISOString();
+    Object.assign(found, {status:body.status,updated_at:now,resolved_at:body.status==='resolved'?now:null});
+    found.events.push({body:body.note,status:body.status,created_at:now}); return structuredClone(found);
+  }
+  if (path === '/api/incidents') return {incidents:structuredClone(previewRecords)};
+  if (found) return structuredClone(found);
+  throw new Error('This encounter could not be found.');
+}
+
+let toastTimer;
+function toast(message) {
+  clearTimeout(toastTimer);
+  $('#toast').textContent = message;
+  $('#toast').hidden = false;
+  toastTimer = setTimeout(() => { $('#toast').hidden = true; }, 4500);
+}
+function showDialog(selector) {
+  const dialog = $(selector);
+  if (!dialog.open) dialog.showModal();
+}
+$$('dialog').forEach((dialog) => {
+  dialog.addEventListener('click', (event) => {
+    if (event.target.closest('[data-close]')) dialog.close();
+    // Clicks on the backdrop are outside the dialog's bounds.
+    if (event.target === dialog) {
+      const rect = dialog.getBoundingClientRect();
+      if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close();
+    }
+  });
+});
+
+function render() {
+  const active = state.incidents.filter((i) => i.status !== 'resolved').length;
+  const resolved = state.incidents.length - active;
+  $('#stat-active').textContent = active;
+  $('#stat-critical').textContent = state.incidents.filter((i) => i.severity === 'SEV-1' && i.status !== 'resolved').length;
+  $('#stat-resolved').textContent = resolved;
+  $('#nav-count').textContent = active;
+  $('#tab-active-count').textContent = active;
+  $('#tab-all-count').textContent = state.incidents.length;
+  $('#tab-resolved-count').textContent = resolved;
+  $$('.tab').forEach((tab) => {
+    tab.classList.toggle('current', tab.dataset.tab === state.tab);
+    tab.setAttribute('aria-pressed', String(tab.dataset.tab === state.tab));
+  });
+  const hall = state.tab === 'resolved';
+  $('#nav-victories').classList.toggle('selected', hall);
+  $('#nav-ledger').classList.toggle('selected', !hall);
+  $('#page-breadcrumb').textContent = hall ? 'Hall of victories' : 'Incident ledger';
+  $('#page-title').textContent = hall ? 'Peace, briefly restored.' : 'Keep the realm running.';
+  $('#page-subtitle').textContent = hall ? 'A toast to the fixes, the root causes, and the brave souls on call.' : 'Here be dragons. And occasionally, DNS issues.';
+  $('#ledger-title').textContent = hall ? 'The hall of victories' : 'The incident ledger';
+  const query = state.query.toLowerCase().trim();
+  const list = state.incidents.filter((i) =>
+    (state.tab === 'all' || (state.tab === 'resolved' ? i.status === 'resolved' : i.status !== 'resolved')) &&
+    (state.severity === 'all' || state.severity === i.severity) &&
+    (!query || [i.title, i.description, i.assignee, i.service, incidentId(i.id)].some((v) => v.toLowerCase().includes(query)))
+  );
+  $('#incident-list').setAttribute('aria-busy', 'false');
+  if (!list.length) {
+    const filtered = Boolean(query || state.severity !== 'all');
+    $('#incident-list').innerHTML = `<div class="empty-state"><span class="empty-icon" aria-hidden="true">${hall ? '⚑' : '✧'}</span><h3>${filtered ? 'No tales match these scrolls.' : hall ? 'No victories recorded. Yet.' : state.tab === 'active' ? 'A suspiciously peaceful realm.' : 'A fresh chapter awaits.'}</h3><p>${filtered ? 'Try a different search or clear your filters.' : hall ? 'Resolve an incident and write the ending to its story.' : 'Sound the alarm when trouble arrives.'}</p>${filtered ? '<button class="secondary" id="clear-filters">Clear filters</button>' : ''}</div>`;
+    $('#clear-filters')?.addEventListener('click', () => { state.query = ''; state.severity = 'all'; $('#search').value = ''; $('#severity-filter').value = 'all'; render(); });
+  } else {
+    $('#incident-list').innerHTML = list.map((i) => `<button class="incident-card" data-incident="${i.id}" aria-label="Open ${escape(incidentId(i.id))}: ${escape(i.title)}">
+      <div class="encounter"><span class="severity-tile sev-${i.severity.slice(-1)}" aria-hidden="true">${i.severity.slice(-1)}</span><div class="encounter-copy"><div class="incident-meta"><span>${incidentId(i.id)}</span><span>·</span><span class="meta-severity sev-text-${i.severity.slice(-1)}">${i.severity} / ${severityLabels[i.severity]}</span></div><h3 class="incident-title">${escape(i.title)}</h3><span class="service-line"><span aria-hidden="true">◇</span> ${escape(i.service)}</span></div></div>
+      ${badge(i.status)}<div class="assignee">${escape(i.assignee)}<span class="time">Updated ${age(i.updated_at)}</span></div><span class="card-arrow" aria-hidden="true">↗</span></button>`).join('');
+  }
+  $('#results-count').textContent = `${list.length} ${list.length === 1 ? 'encounter' : 'encounters'} in view · ${state.incidents.length} in the ledger`;
+}
+async function load() {
+  try {
+    const data = await api('/api/incidents');
+    state.incidents = data.incidents;
+    $('#load-error').hidden = true;
+    render();
+    return true;
+  } catch (error) {
+    $('#load-error').hidden = false;
+    $('#load-error span').textContent = 'The ledger could not be loaded. Your data is safe on the server.';
+    $('#incident-list').setAttribute('aria-busy', 'false');
+    $('#incident-list').innerHTML = '';
+    $('#results-count').textContent = 'The messenger is having trouble reaching the server.';
+    return false;
+  }
+}
+$('#retry').addEventListener('click', load);
+$$('.tab').forEach((tab) => tab.addEventListener('click', () => { state.tab = tab.dataset.tab; render(); }));
+$('#search').addEventListener('input', (event) => { state.query = event.target.value; render(); });
+$('#severity-filter').addEventListener('change', (event) => { state.severity = event.target.value; render(); });
+$('#nav-ledger').addEventListener('click', () => { state.tab = 'active'; render(); });
+$('#nav-victories').addEventListener('click', () => { state.tab = 'resolved'; render(); });
+$('#guide-button').addEventListener('click', () => showDialog('#guide-dialog'));
+$('#new-incident').addEventListener('click', () => { $('#create-error').hidden = true; showDialog('#create-dialog'); });
+
+$('#create-form').addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const button = event.target.querySelector('[type=submit]');
+  button.disabled = true;
+  $('#create-error').hidden = true;
+  try {
+    const incident = await api('/api/incidents', { method: 'POST', body: JSON.stringify(Object.fromEntries(new FormData(event.target))) });
+    $('#create-dialog').close();
+    event.target.reset();
+    state.tab = 'active'; state.query = ''; state.severity = 'all';
+    $('#search').value = ''; $('#severity-filter').value = 'all';
+    await load();
+    toast(`${incidentId(incident.id)} recorded. Assemble the party.`);
+  } catch (error) {
+    $('#create-error').textContent = error.message;
+    $('#create-error').hidden = false;
+  } finally { button.disabled = false; }
+});
+
+$('#incident-list').addEventListener('click', (event) => {
+  const card = event.target.closest('[data-incident]');
+  if (card) openIncident(Number(card.dataset.incident));
+});
+let detailRequest = 0;
+async function openIncident(id) {
+  const request = ++detailRequest;
+  state.selected = id;
+  $('#detail-content').innerHTML = '<div class="modal-top"><span class="eyebrow">UNROLLING THE SCROLL</span><button class="icon-button" data-close aria-label="Close incident">×</button></div><h2 id="detail-title">Loading encounter…</h2>';
+  showDialog('#detail-dialog');
+  try {
+    const i = await api(`/api/incidents/${id}`);
+    if (request !== detailRequest) return;
+    renderDetail(i);
+  } catch (error) {
+    if (request !== detailRequest) return;
+    $('#detail-content').innerHTML = `<div class="modal-top"><span class="eyebrow">A MISSING SCROLL</span><button class="icon-button" data-close aria-label="Close incident">×</button></div><h2 id="detail-title">Couldn’t open this encounter.</h2><p class="form-error">${escape(error.message)}</p><button class="secondary" id="retry-detail">Try again</button>`;
+    $('#retry-detail').addEventListener('click', () => openIncident(id));
+  }
+}
+function renderDetail(i) {
+  $('#detail-content').innerHTML = `<div class="modal-top"><span class="eyebrow">${incidentId(i.id)} · ${i.severity} / ${severityLabels[i.severity].toUpperCase()}</span><button class="icon-button" data-close aria-label="Close incident">×</button></div>
+    <h2 id="detail-title">${escape(i.title)}</h2><div class="detail-meta">${badge(i.status)}<span>Opened ${date(i.created_at)}</span></div><p class="detail-description">${escape(i.description)}</p>
+    <div class="detail-info"><div><span>AFFECTED SERVICE</span><p>${escape(i.service)}</p></div><div><span>ADVENTURER ON DUTY</span><p>${escape(i.assignee)}</p></div></div>
+    <h3 class="timeline-title">The investigation log</h3><div class="timeline">${i.events.map((e) => `<div class="timeline-event"><div class="event-meta">${labels[e.status].toUpperCase()} · ${date(e.created_at)}</div><p class="event-body">${escape(e.body)}</p></div>`).join('')}</div>
+    <form id="update-form" class="update-form"><label for="update-status">Where does the quest stand?</label><select name="status" id="update-status">${Object.entries(labels).map(([value, label]) => `<option value="${value}" ${value === i.status ? 'selected' : ''}>${label}</option>`).join('')}</select><label for="update-note">Leave an investigation note</label><textarea name="note" id="update-note" required minlength="3" maxlength="3000" rows="3" placeholder="What did you discover? If it’s fixed, record the cause and the remedy."></textarea><p id="update-error" class="form-error" role="alert" hidden></p><div class="modal-actions"><button type="button" class="secondary" data-close>Close scroll</button><button class="primary" type="submit">Save update <span aria-hidden="true">↗</span></button></div></form>`;
+  $('#update-form').addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const button = event.target.querySelector('[type=submit]');
+    button.disabled = true;
+    $('#update-error').hidden = true;
+    try {
+      const saved = await api(`/api/incidents/${i.id}`, { method: 'PATCH', body: JSON.stringify(Object.fromEntries(new FormData(event.target))) });
+      await load();
+      // Avoid resubmitting a successful write if refreshing the timeline fails.
+      $('#detail-dialog').close();
+      toast(saved.status === 'resolved' ? 'Dragon slain. The realm owes you one.' : 'The scroll has been updated.');
+    } catch (error) {
+      $('#update-error').textContent = error.message;
+      $('#update-error').hidden = false;
+    } finally { button.disabled = false; }
+  });
+}
+
+async function checkHealth() {
+  $('#health-label').textContent = 'Design preview';
+  $('#health-content').innerHTML = '<div class="health-row"><span>Preview mode</span><b>Session-only sample data</b></div><p class="health-note">This preview runs without a server. The downloadable app stores incidents in SQLite and checks the database at /health. Run it to see live health results.</p>';
+}
+
+for (const selector of ['#nav-health', '#top-health']) $(selector).addEventListener('click', () => { showDialog('#health-dialog'); checkHealth(); });
+$('#refresh-health').addEventListener('click', checkHealth);
+load();
+checkHealth();
+
+
+})();
+</script>
+</body></html>

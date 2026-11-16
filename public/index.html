@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="DNS & Dragons: a tiny incident tracker for fantasy infrastructure. Slay bugs. Save the realm.">
+  <meta name="theme-color" content="#763c35">
+  <title>DNS & Dragons — The incident ledger</title>
+  <link rel="icon" href="/crest.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to the incident ledger</a>
+  <aside class="sidebar">
+    <a href="/" class="brand" aria-label="DNS and Dragons home"><span class="brand-icon">D<span>&</span>D</span><span>DNS & Dragons<small>REALM RELIABILITY ENGINEERING</small></span></a>
+    <div class="sidebar-label">YOUR CAMPAIGN</div>
+    <nav aria-label="Main navigation">
+      <button class="nav-item selected" id="nav-ledger"><span class="nav-symbol">▤</span> Incident ledger <span class="nav-count" id="nav-count">—</span></button>
+      <button class="nav-item" id="nav-victories"><span class="nav-symbol">⚑</span> Hall of victories</button>
+      <button class="nav-item" id="nav-health"><span class="nav-symbol">♡</span> Realm health <span class="health-dot" id="nav-health-dot"></span></button>
+    </nav>
+    <div class="sidebar-callout"><span class="callout-star">✧</span><p>May your uptime be high<br>and your dragons few.</p><span class="tiny-label">THE ON-CALL OATH</span></div>
+    <button class="field-guide" id="guide-button"><span>⌘</span> Adventurer’s field guide <span>↗</span></button>
+    <div class="sidebar-footer"><span class="avatar">KR</span><div>Keeper of the realm<small>Level 1 · On-call adventurer</small></div></div>
+  </aside>
+
+  <div class="workspace">
+    <header class="topbar"><div><span class="breadcrumb">The realm</span><span class="slash">/</span><span id="page-breadcrumb">Incident ledger</span></div><button id="top-health" class="health-pill"><span class="health-dot"></span><span id="health-label">Checking the watch…</span></button></header>
+    <main id="main">
+      <section class="hero" aria-labelledby="page-title">
+        <div><div class="eyebrow"><span></span> THE ON-CALL CAMPAIGN</div><h1 id="page-title">Keep the realm running.</h1><p id="page-subtitle">Here be dragons. And occasionally, DNS issues.</p></div>
+        <div class="hero-seal" aria-hidden="true"><span class="seal-spark one">✧</span><span class="seal-spark two">✦</span><img src="/crest.svg" alt=""><span class="seal-caption">ROLL FOR RELIABILITY</span></div>
+      </section>
+
+      <section class="stats" aria-label="Incident statistics">
+        <div class="stat"><div><span class="stat-label">ACTIVE QUESTS</span><strong id="stat-active">—</strong><span class="stat-caption">Trouble is afoot</span></div><span class="stat-icon active-icon">⚑</span></div>
+        <div class="stat"><div><span class="stat-label">CRITICAL ENCOUNTERS</span><strong id="stat-critical">—</strong><span class="stat-caption">All hands on deck</span></div><span class="stat-icon critical-icon">!</span></div>
+        <div class="stat"><div><span class="stat-label">DRAGONS SLAIN</span><strong id="stat-resolved">—</strong><span class="stat-caption">Peace restored, for now</span></div><span class="stat-icon resolved-icon">✓</span></div>
+      </section>
+
+      <section class="ledger" aria-labelledby="ledger-title">
+        <div class="section-heading"><div><h2 id="ledger-title">The incident ledger</h2><p>Every outage is a story. Give yours a good ending.</p></div><button class="primary" id="new-incident"><span aria-hidden="true">＋</span> Sound the alarm</button></div>
+        <div class="filters">
+          <div class="tabs" role="group" aria-label="Filter by status"><button class="tab current" data-tab="active" aria-pressed="true">Active <span id="tab-active-count">0</span></button><button class="tab" data-tab="all" aria-pressed="false">All incidents <span id="tab-all-count">0</span></button><button class="tab" data-tab="resolved" aria-pressed="false">Resolved <span id="tab-resolved-count">0</span></button></div>
+          <div class="filter-inputs"><label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Search the scrolls…" aria-label="Search incidents" maxlength="120"></label><label class="sr-only" for="severity-filter">Severity</label><select id="severity-filter"><option value="all">All severities</option><option value="SEV-1">SEV-1 · Critical</option><option value="SEV-2">SEV-2 · Major</option><option value="SEV-3">SEV-3 · Minor</option></select></div>
+        </div>
+        <div id="load-error" class="error-banner" hidden><span>The ledger could not be loaded.</span><button id="retry">Try again</button></div>
+        <div class="list-labels" aria-hidden="true"><span>ENCOUNTER</span><span>STATUS</span><span>ADVENTURER</span><span></span></div>
+        <div id="incident-list" class="incident-list" aria-live="polite" aria-busy="true"><p class="loading">Unrolling the scrolls…</p></div>
+        <div class="ledger-footer"><span id="results-count">Fetching the latest tales…</span><span><span class="small-diamond">◇</span> A little chaos. A lot of observability.</span></div>
+      </section>
+      <footer class="page-footer"><span>DNS & DRAGONS <span class="footer-divider">/</span> SLAY BUGS. SAVE THE REALM.</span><span>Fictional incidents. Real persistence.</span></footer>
+    </main>
+  </div>
+
+  <dialog id="create-dialog" aria-labelledby="create-title" class="modal">
+    <div class="modal-top"><span class="eyebrow">A NEW ENCOUNTER</span><button class="icon-button" data-close aria-label="Close new incident">×</button></div>
+    <h2 id="create-title">Sound the alarm.</h2><p class="modal-intro">Something is amiss in the realm. Let’s get it on the record.</p>
+    <form id="create-form">
+      <label for="incident-title">What’s the trouble?</label><input id="incident-title" name="title" required minlength="3" maxlength="120" placeholder="e.g. The firewall is literally on fire">
+      <div class="form-grid"><div><label for="incident-severity">Severity</label><select id="incident-severity" name="severity"><option value="SEV-2">SEV-2 · Major mischief</option><option value="SEV-1">SEV-1 · The realm is on fire</option><option value="SEV-3">SEV-3 · A minor curse</option></select></div><div><label for="incident-service">Affected service</label><input id="incident-service" name="service" required minlength="2" maxlength="60" placeholder="e.g. The enchanted gateway"></div></div>
+      <label for="incident-assignee">Adventurer on duty</label><input id="incident-assignee" name="assignee" required minlength="2" maxlength="60" placeholder="e.g. Kanishka, keeper of uptime">
+      <label for="incident-description">What have you observed?</label><textarea id="incident-description" name="description" required minlength="10" maxlength="3000" rows="4" placeholder="Symptoms, affected villagers, suspicious spells…"></textarea>
+      <p class="form-hint">This is a shared demo ledger. Keep secrets and personal data out of your scrolls.</p><p class="form-error" id="create-error" role="alert" hidden></p>
+      <div class="modal-actions"><button type="button" class="secondary" data-close>Never mind</button><button class="primary" type="submit">Create incident <span aria-hidden="true">↗</span></button></div>
+    </form>
+  </dialog>
+
+  <dialog id="detail-dialog" aria-labelledby="detail-title" class="modal detail-modal"><div id="detail-content"></div></dialog>
+  <dialog id="health-dialog" aria-labelledby="health-title" class="modal"><div class="modal-top"><span class="eyebrow">THE WATCHTOWER</span><button class="icon-button" data-close aria-label="Close realm health">×</button></div><h2 id="health-title">Realm health</h2><p class="modal-intro">A live check of the app and its database. Fictional dragons don’t affect these results.</p><div id="health-content"></div><div class="modal-actions"><a class="secondary button-link" href="/health" target="_blank" rel="noopener">View raw /health ↗</a><button id="refresh-health" class="primary">Check again</button></div></dialog>
+  <dialog id="guide-dialog" aria-labelledby="guide-title" class="modal"><div class="modal-top"><span class="eyebrow">READ BEFORE QUESTING</span><button class="icon-button" data-close aria-label="Close field guide">×</button></div><h2 id="guide-title">Adventurer’s field guide</h2><p class="modal-intro">An incident tracker with a very questionable naming convention.</p><div class="guide-section"><h3>1. Sound the alarm</h3><p>Record what broke, the affected service, and who’s investigating. Choose the severity based on impact.</p><div class="guide-severities"><p><b class="sev-text-1">SEV-1 · Critical</b> — The realm is down. Drop everything.</p><p><b class="sev-text-2">SEV-2 · Major</b> — Something is degraded. Gather the party.</p><p><b class="sev-text-3">SEV-3 · Minor</b> — A smaller issue. Still worth a quest.</p></div></div><div class="guide-section"><h3>2. Leave a trail</h3><p>Open an incident to add notes. Use <b>Investigating</b> while finding the cause and <b>Monitoring</b> while verifying a fix.</p></div><div class="guide-section"><h3>3. Restore the peace</h3><p>Choose <b>Resolved</b> and document the fix. Your victory joins the hall. If trouble returns, reopen it with an investigation note.</p></div><p class="form-hint">Example incidents are fictional. Changes are stored in a real SQLite database on the server. No spells, AI calls, or actual cloud remediation happen here.</p><div class="modal-actions"><button class="primary" data-close>Let’s go questing</button></div></dialog>
+  <div id="toast" role="status" hidden></div>
+</body>
+</html>
