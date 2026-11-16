@@ -30,17 +30,21 @@ The default database path is relative to the project directory. A supplied relat
 
 `preview.html` is a self-contained **design preview**. Open it directly in a browser to try the same UI without running Node. Its records live in memory only, reset on refresh, and its health panel is explicitly simulated. The actual app always uses server-side SQLite and a real health query. Regenerate the preview with `node scripts/build-preview.mjs`.
 
-## Architecture — proposed EC2 deployment
+## Architecture — live EC2 deployment
 
-**Status:** implemented and tested locally; not yet pushed to GitHub or deployed to AWS. This diagram describes the intended deployment, not an existing live environment.
+**Status:** live on AWS EC2 at **http://13.184.114.100** (health endpoint: **http://13.184.114.100/health**).
 
-![Proposed EC2 architecture](docs/architecture.svg)
+```text
+Browser → Nginx on Ubuntu EC2 → Node.js → SQLite on EBS
+```
+
+![EC2 architecture](docs/architecture.svg)
 
 ```mermaid
 flowchart TD
-  A[Browser] -->|HTTP request| B[Nginx on Linux EC2]
-  B -->|Loopback port 3000| C[Node.js app]
-  C -->|Parameterized SQL| D[SQLite on persistent EBS]
+  A[Browser] -->|HTTP :80| B[Nginx on Ubuntu 24.04 EC2]
+  B -->|Loopback 127.0.0.1:3000| C[Node.js v24.22.3 app]
+  C -->|Parameterized SQL| D[SQLite on encrypted EBS]
   D -->|Saved records| C
   C -->|HTML or JSON response| B
   B -->|Response| A
@@ -48,16 +52,15 @@ flowchart TD
 
 The public page, API, and database-backed health endpoint come from the same app. A create/update request is validated, written in a transaction, and read back from SQLite. Investigation events and status changes are committed together. Static assets are served from an explicit allowlist; the database and source files are never exposed as assets.
 
-### Why these choices
+### Actual deployment choices
 
-- **One Linux EC2 instance:** matches the assignment and keeps operations understandable. Record the selected instance type and Linux distribution after provisioning. Lambda would add a different hosting model and would not satisfy the EC2 requirement.
-- **SQLite on the instance's EBS volume:** an actual relational database without another service, network rule, or database bill. RDS offers managed backups and stronger separation but adds infrastructure. This demo accepts a single point of failure and a small write workload.
+- **Region & Instance:** `us-east-2` (Ohio — account policy restricted region selection to `us-east-2`), `t3.micro` (64-bit x86), Standard CPU credit specification, 8 GiB encrypted `gp3` EBS volume.
+- **Operating System & Runtime:** Ubuntu Server 24.04 LTS with Node.js `v24.22.3` installed to `/opt/node24` (checksum-verified).
+- **One Linux EC2 instance:** matches the assignment and keeps operations understandable. Lambda would add a different hosting model and would not satisfy the EC2 requirement.
+- **SQLite on the instance's EBS volume (`/var/lib/dns-dragons`):** an actual relational database without another service, network rule, or database bill. RDS offers managed backups and stronger separation but adds infrastructure. This demo accepts a single point of failure and a small write workload.
 - **Plain browser UI and Node:** no bundler or third-party runtime packages to manage. A larger framework would be useful if routing or product complexity grew.
-- **Nginx + systemd:** proposed process supervision, startup after reboot, and a reverse proxy. Containers and CI/CD can be added later; they are not required for this version.
-
-Example Nginx and systemd templates are in `deploy/`. They have **not been applied**. Before deploying, verify paths and the Node 24 executable, create the unprivileged service account, configure the persistent database directory, and check the current AWS account's Free Tier eligibility and resource prices. This project does not provision AWS resources or guarantee zero cost. Set a budget alert and avoid unneeded paid services.
-
-The intended security group exposes the web port and restricts SSH to the administrator's IP (or use SSM); port 3000 and the database are not public. HTTPS should be configured for a public deployment when a hostname is available. Keep it running until the reviewer confirms they are done, then clean up resources that could incur charges.
+- **Nginx + systemd:** `dns-dragons.service` runs the app as the unprivileged `dns-dragons` system user with automatic startup on reboot, behind Nginx (`deploy/nginx.conf`) proxying port 80 to `127.0.0.1:3000`.
+- **Security Group:** Inbound HTTP (80) from `0.0.0.0/0` and SSH (22) restricted to the administrator's IP; port 3000 and the database remain closed to the internet. HTTPS can be added once a domain name is attached. Keep the instance running until review is complete, then stop/terminate resources to avoid ongoing charges.
 
 ## Health and logs
 
